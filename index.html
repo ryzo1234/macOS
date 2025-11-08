@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>iOS 26 Experience</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="desktop">
+      <section class="iphone" aria-label="Wirtualny iPhone z systemem iOS 26">
+        <header class="status-bar" aria-label="Pasek statusu">
+          <div class="status-left">
+            <span class="time" aria-live="polite">09:41</span>
+            <span class="date">Pon, 18 wrz</span>
+          </div>
+          <div class="status-right">
+            <span class="icon signal" aria-label="Sygnał komórkowy"></span>
+            <span class="icon wifi" aria-label="Stan Wi-Fi"></span>
+            <span class="icon battery" aria-label="Bateria"></span>
+          </div>
+        </header>
+
+        <section class="widgets" aria-label="Widżety">
+          <article class="widget weather" aria-label="Widżet pogody">
+            <h2>Kraków</h2>
+            <p class="temperature"><span class="value">21</span><sup>°C</sup></p>
+            <p class="conditions">Słonecznie</p>
+            <p class="details">
+              <span>Wiatr 8 km/h</span>
+              <span>Wilg. 52%</span>
+            </p>
+          </article>
+          <article class="widget activity" aria-label="Widżet aktywności">
+            <h2>Aktywność</h2>
+            <p class="rings">
+              <span data-ring="move" aria-label="Cel ruchu">72%</span>
+              <span data-ring="exercise" aria-label="Cel ćwiczeń">54%</span>
+              <span data-ring="stand" aria-label="Cel stania">10/12</span>
+            </p>
+          </article>
+        </section>
+
+        <section class="app-grid" aria-label="Siatka aplikacji">
+          <button class="app" data-app="messages">
+            <span class="emoji" aria-hidden="true">💬</span>
+            <span class="label">Wiadomości</span>
+          </button>
+          <button class="app" data-app="calendar">
+            <span class="emoji" aria-hidden="true">🗓️</span>
+            <span class="label">Kalendarz</span>
+          </button>
+          <button class="app" data-app="photos">
+            <span class="emoji" aria-hidden="true">📷</span>
+            <span class="label">Zdjęcia</span>
+          </button>
+          <button class="app" data-app="music">
+            <span class="emoji" aria-hidden="true">🎶</span>
+            <span class="label">Muzyka</span>
+          </button>
+          <button class="app" data-app="maps">
+            <span class="emoji" aria-hidden="true">🗺️</span>
+            <span class="label">Mapy</span>
+          </button>
+          <button class="app" data-app="health">
+            <span class="emoji" aria-hidden="true">❤️</span>
+            <span class="label">Zdrowie</span>
+          </button>
+          <button class="app" data-app="app-store">
+            <span class="emoji" aria-hidden="true">🛍️</span>
+            <span class="label">App Store</span>
+          </button>
+          <button class="app" data-app="settings">
+            <span class="emoji" aria-hidden="true">⚙️</span>
+            <span class="label">Ustawienia</span>
+          </button>
+        </section>
+
+        <footer class="dock" aria-label="Dock">
+          <button class="dock-app" data-app="phone" aria-label="Telefon">📞</button>
+          <button class="dock-app" data-app="safari" aria-label="Safari">🧭</button>
+          <button class="dock-app" data-app="mail" aria-label="Mail">✉️</button>
+          <button class="dock-app" data-app="music" aria-label="Muzyka">🎧</button>
+        </footer>
+
+        <button class="control-center-toggle" aria-expanded="false">
+          Centrum sterowania
+        </button>
+        <button class="notification-center-toggle" aria-expanded="false">
+          Centrum powiadomień
+        </button>
+
+        <section class="control-center" aria-hidden="true">
+          <h2>Centrum sterowania</h2>
+          <div class="toggles">
+            <button class="toggle" data-toggle="wifi" aria-pressed="true">
+              <span class="icon">📶</span>
+              <span>Wi‑Fi</span>
+            </button>
+            <button class="toggle" data-toggle="bluetooth" aria-pressed="true">
+              <span class="icon">🅱️</span>
+              <span>Bluetooth</span>
+            </button>
+            <button class="toggle" data-toggle="airdrop" aria-pressed="false">
+              <span class="icon">🛩️</span>
+              <span>Airdrop</span>
+            </button>
+            <button class="toggle" data-toggle="focus" aria-pressed="false">
+              <span class="icon">🌙</span>
+              <span>Skupienie</span>
+            </button>
+          </div>
+          <div class="slider" role="group" aria-label="Jasność ekranu">
+            <label for="brightness">Jasność</label>
+            <input id="brightness" type="range" min="0" max="100" value="70" />
+          </div>
+          <div class="slider" role="group" aria-label="Głośność">
+            <label for="volume">Głośność</label>
+            <input id="volume" type="range" min="0" max="100" value="50" />
+          </div>
+        </section>
+
+        <section class="notification-center" aria-hidden="true">
+          <h2>Powiadomienia</h2>
+          <article class="notification">
+            <h3>Spotkanie zespołu</h3>
+            <p>Za 30 minut na FaceTime</p>
+          </article>
+          <article class="notification">
+            <h3>Fitness+</h3>
+            <p>Nowy trening HIIT dostępny</p>
+          </article>
+          <article class="notification">
+            <h3>Mapy</h3>
+            <p>Warunki na trasie do domu bez utrudnień</p>
+          </article>
+        </section>
+
+        <dialog class="app-modal" aria-modal="true" aria-labelledby="app-title">
+          <div class="modal-header">
+            <h2 id="app-title">Aplikacja</h2>
+            <button class="close-modal" aria-label="Zamknij">×</button>
+          </div>
+          <div class="modal-content" role="document"></div>
+        </dialog>
+      </section>
+
+      <aside class="sidebar" aria-label="Panel funkcji">
+        <h2>iOS 26 – funkcje eksperymentalne</h2>
+        <ul>
+          <li>Widżety adaptacyjne reagujące na kontekst.</li>
+          <li>Powiadomienia grupowane semantycznie.</li>
+          <li>Centrum sterowania z inteligentnymi profilami.</li>
+          <li>Tryb immersyjny dla pełnoekranowych aplikacji webowych.</li>
+        </ul>
+        <section class="quick-actions" aria-label="Szybkie akcje">
+          <button data-action="focus">Aktywuj Skupienie</button>
+          <button data-action="travel">Tryb podróży</button>
+          <button data-action="gaming">Tryb gier ProMotion+</button>
+        </section>
+        <section class="system-log" aria-live="polite" aria-label="Dziennik systemowy">
+          <h3>Dziennik systemowy</h3>
+          <ul class="log-entries"></ul>
+        </section>
+      </aside>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
