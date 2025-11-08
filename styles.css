@@ -1,0 +1,444 @@
+:root {
+  color-scheme: light dark;
+  --bg: radial-gradient(circle at top, #3a4fe0 0%, #101631 80%);
+  --iphone-bg: linear-gradient(160deg, rgba(30, 34, 58, 0.95), rgba(11, 14, 28, 0.96));
+  --glass: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.2);
+  --text-primary: #f6f8ff;
+  --text-secondary: rgba(238, 240, 255, 0.7);
+  --accent: #82f6ff;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: clamp(1rem, 2vw, 3rem);
+}
+
+.desktop {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+  width: min(1200px, 100%);
+  grid-template-columns: minmax(320px, 420px) minmax(260px, 1fr);
+}
+
+.iphone {
+  position: relative;
+  background: var(--iphone-bg);
+  border-radius: 38px;
+  padding: 2.5rem 1.25rem 3.5rem;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  min-height: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.status-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.status-left .time {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status-right {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.status-right .icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  display: inline-flex;
+}
+
+.status-right .battery::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 100%;
+  border-radius: 4px;
+  margin: auto;
+  background: linear-gradient(90deg, #80ffaf, #14ffda);
+}
+
+.widgets {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+}
+
+.widget {
+  padding: 1.2rem;
+  border-radius: 24px;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  gap: 0.6rem;
+}
+
+.widget h2 {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.weather .temperature {
+  font-size: 2.8rem;
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.weather .details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.activity .rings {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  flex: 1;
+}
+
+.app {
+  background: rgba(35, 45, 78, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 0.9rem 0.3rem;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  color: inherit;
+  font-size: 0.8rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.app:focus-visible,
+.app:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 24px rgba(12, 20, 38, 0.45);
+  outline: none;
+}
+
+.app .emoji {
+  font-size: 1.8rem;
+}
+
+.dock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+  padding: 1rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(15, 18, 32, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.dock::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.dock-app {
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.control-center-toggle,
+.notification-center-toggle {
+  position: absolute;
+  right: 1.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(26, 30, 52, 0.85);
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.control-center-toggle {
+  bottom: 6.5rem;
+}
+
+.notification-center-toggle {
+  bottom: 3.5rem;
+}
+
+.control-center,
+.notification-center {
+  position: absolute;
+  inset: 3.5rem 1.2rem auto;
+  background: rgba(12, 16, 30, 0.94);
+  border-radius: 28px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 40px 50px rgba(0, 0, 0, 0.45);
+  max-height: 70%;
+  overflow: auto;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.control-center[aria-hidden='false'],
+.notification-center[aria-hidden='false'] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.control-center h2,
+.notification-center h2 {
+  margin-top: 0;
+}
+
+.toggles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.toggle {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: center;
+  padding: 1rem 0.5rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(40, 52, 90, 0.8);
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.toggle[aria-pressed='true'] {
+  background: linear-gradient(135deg, rgba(130, 246, 255, 0.9), rgba(54, 107, 255, 0.9));
+  color: #081124;
+  box-shadow: 0 12px 26px rgba(88, 174, 255, 0.35);
+}
+
+.slider {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.slider input[type='range'] {
+  width: 100%;
+  accent-color: #7bd9ff;
+}
+
+.notification {
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  background: rgba(34, 40, 64, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0.9rem;
+}
+
+.notification h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.95rem;
+}
+
+.notification p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.app-modal {
+  border: none;
+  border-radius: 24px;
+  padding: 0;
+  color: inherit;
+  background: rgba(10, 12, 25, 0.96);
+  min-width: min(420px, 90vw);
+}
+
+.app-modal::backdrop {
+  background: rgba(2, 6, 20, 0.65);
+  backdrop-filter: blur(10px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-content {
+  padding: 1.25rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.close-modal {
+  border: none;
+  background: rgba(44, 56, 90, 0.7);
+  color: inherit;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.sidebar {
+  background: rgba(11, 14, 28, 0.72);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 2.5vw, 2.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  gap: 1.5rem;
+  backdrop-filter: blur(18px);
+}
+
+.sidebar h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+}
+
+.sidebar ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-secondary);
+  display: grid;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.quick-actions {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.quick-actions button {
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(30, 36, 62, 0.8);
+  color: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.quick-actions button:hover,
+.quick-actions button:focus-visible {
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.system-log {
+  background: rgba(14, 18, 32, 0.85);
+  border-radius: 16px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-height: 200px;
+  overflow: auto;
+}
+
+.system-log ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+  .desktop {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .sidebar {
+    width: min(420px, 100%);
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .iphone {
+    width: 100%;
+    padding-inline: 1rem;
+    border-radius: 28px;
+  }
+
+  .widgets {
+    grid-template-columns: 1fr;
+  }
+
+  .app-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .control-center,
+  .notification-center {
+    inset-inline: 0.75rem;
+  }
+}
