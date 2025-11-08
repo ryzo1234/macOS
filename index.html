@@ -78,30 +78,50 @@
           <div class="sidebar-item">Pobrane</div>
           <div class="sidebar-item">Aplikacje</div>
         </aside>
-        <section class="content-area">
+        <section class="content-area finder-area">
           <div class="content-toolbar">
-            <div class="breadcrumbs">
-              <span>Biurko</span>
+            <nav class="breadcrumbs" data-finder-breadcrumbs aria-label="Ścieżka">
+              <button type="button" disabled>Biurko</button>
+            </nav>
+            <div class="finder-actions">
+              <button type="button" class="toolbar-btn subtle" data-finder-back aria-label="Wstecz">‹</button>
+              <button type="button" class="toolbar-btn subtle" data-finder-forward aria-label="Dalej">›</button>
+              <button type="button" class="toolbar-btn subtle" data-finder-up aria-label="Folder nadrzędny">⌘↑</button>
             </div>
-            <div class="view-toggle">⬚ ⬚</div>
           </div>
-          <div class="content-grid">
-            <div class="grid-item" tabindex="0" data-preview-title="Projekty" data-preview-kind="Folder" data-preview-body="Kolekcja szkiców UI i komponentów interfejsu." data-preview-icon="folder">
-              <div class="icon folder-icon"></div>
-              <span>Projekty</span>
+          <div class="finder-content">
+            <div class="finder-main" data-finder-main>
+              <div class="content-grid" data-finder-grid role="grid" aria-label="Pliki i foldery"></div>
+              <div class="finder-empty" data-finder-empty hidden>
+                <div class="empty-illustration">🗂️</div>
+                <p>W tym folderze jest pusto. Dodaj nowe pliki, aby zacząć pracę.</p>
+              </div>
             </div>
-            <div class="grid-item" tabindex="0" data-preview-title="Zdjęcia" data-preview-kind="Biblioteka" data-preview-body="Alpejskie panoramy i materiały referencyjne do tapet." data-preview-image="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80">
-              <div class="icon folder-icon"></div>
-              <span>Zdjęcia</span>
-            </div>
-            <div class="grid-item" tabindex="0" data-preview-title="Notatki.txt" data-preview-kind="Dokument" data-preview-body="Symulacja macOS – lista pomysłów i notatek do kolejnych wersji." data-preview-open="notes">
-              <div class="icon file-icon"></div>
-              <span>Notatki.txt</span>
-            </div>
-            <div class="grid-item" tabindex="0" data-preview-title="Plan.pdf" data-preview-kind="Dokument" data-preview-body="Roadmapa funkcji: Spotlight, Centrum sterowania, zaawansowane okna i skróty klawiszowe." data-preview-icon="pdf">
-              <div class="icon file-icon"></div>
-              <span>Plan.pdf</span>
-            </div>
+            <aside class="finder-inspector" data-finder-inspector aria-live="polite">
+              <div class="inspector-empty" data-finder-inspector-empty>
+                <p>Wybierz element, aby zobaczyć szczegóły i metadane.</p>
+              </div>
+              <div class="inspector-content" data-finder-inspector-content hidden>
+                <div class="inspector-icon" data-finder-inspector-icon></div>
+                <h3 data-finder-inspector-name></h3>
+                <p class="inspector-kind" data-finder-inspector-kind></p>
+                <dl class="inspector-meta">
+                  <div>
+                    <dt>Zmieniono</dt>
+                    <dd data-finder-inspector-modified>—</dd>
+                  </div>
+                  <div>
+                    <dt>Rozmiar</dt>
+                    <dd data-finder-inspector-size>—</dd>
+                  </div>
+                  <div>
+                    <dt>Etykiety</dt>
+                    <dd data-finder-inspector-tags>Brak</dd>
+                  </div>
+                </dl>
+                <p class="inspector-description" data-finder-inspector-description></p>
+              </div>
+            </aside>
           </div>
         </section>
       </div>
@@ -119,27 +139,27 @@
         <div class="title-actions">✎</div>
       </div>
       <div class="window-content notes-content">
-        <aside class="sidebar">
+        <aside class="sidebar notes-sidebar">
           <div class="sidebar-title">Notatki iCloud</div>
-          <div class="sidebar-item active">Pomysły</div>
-          <div class="sidebar-item">Zakupy</div>
-          <div class="sidebar-item">Cele</div>
+          <ul class="notes-list" data-notes-list></ul>
+          <div class="notes-sidebar-footer">
+            <button class="toolbar-btn secondary" type="button" data-notes-new>Nowa notatka</button>
+          </div>
         </aside>
-        <section class="content-area">
+        <section class="content-area notes-main">
           <div class="note-toolbar">
-            <button class="toolbar-btn">Dodaj</button>
-            <button class="toolbar-btn">Udostępnij</button>
-            <button class="toolbar-btn">Format</button>
+            <div class="note-actions">
+              <button class="toolbar-btn" type="button" data-notes-add>Dodaj</button>
+              <button class="toolbar-btn" type="button" data-notes-share>Udostępnij</button>
+              <button class="toolbar-btn" type="button" data-notes-format>Format</button>
+            </div>
+            <div class="note-meta">
+              <span data-notes-updated>Wybierz notatkę, aby zobaczyć szczegóły</span>
+            </div>
           </div>
           <article class="note-view">
-            <h1>Pomysł na aplikację</h1>
-            <p>Stwórz symulator macOS, który działa w przeglądarce i pozwala poczuć atmosferę systemu Apple.</p>
-            <p>Dodaj interaktywne okna, Dock, pasek menu oraz dynamiczne tapety.</p>
-            <ul>
-              <li>Aktualizowany zegar</li>
-              <li>Animacje Docka</li>
-              <li>Możliwość przeciągania okien</li>
-            </ul>
+            <h1 data-notes-title>Wybierz notatkę</h1>
+            <div class="note-body" data-notes-body></div>
           </article>
         </section>
       </div>

@@ -28,6 +28,35 @@ const quickLookCloseElements = quickLook
   : [];
 const controlTiles = controlCenter ? Array.from(controlCenter.querySelectorAll('[data-toggle]')) : [];
 
+const finderElements = (() => {
+  const windowEl = document.querySelector('[data-app-window="finder"]');
+  if (!windowEl) {
+    return {};
+  }
+  return {
+    window: windowEl,
+    grid: windowEl.querySelector('[data-finder-grid]'),
+    main: windowEl.querySelector('[data-finder-main]'),
+    empty: windowEl.querySelector('[data-finder-empty]'),
+    breadcrumbs: windowEl.querySelector('[data-finder-breadcrumbs]'),
+    back: windowEl.querySelector('[data-finder-back]'),
+    forward: windowEl.querySelector('[data-finder-forward]'),
+    up: windowEl.querySelector('[data-finder-up]'),
+    inspector: {
+      root: windowEl.querySelector('[data-finder-inspector]'),
+      empty: windowEl.querySelector('[data-finder-inspector-empty]'),
+      content: windowEl.querySelector('[data-finder-inspector-content]'),
+      icon: windowEl.querySelector('[data-finder-inspector-icon]'),
+      name: windowEl.querySelector('[data-finder-inspector-name]'),
+      kind: windowEl.querySelector('[data-finder-inspector-kind]'),
+      modified: windowEl.querySelector('[data-finder-inspector-modified]'),
+      size: windowEl.querySelector('[data-finder-inspector-size]'),
+      tags: windowEl.querySelector('[data-finder-inspector-tags]'),
+      description: windowEl.querySelector('[data-finder-inspector-description]'),
+    },
+  };
+})();
+
 const wallpapers = {
   sunset: `radial-gradient(circle at top, rgba(255, 200, 150, 0.4), transparent 40%),
            radial-gradient(circle at bottom, rgba(64, 156, 255, 0.5), transparent 45%),
@@ -66,6 +95,196 @@ const appIconMap = {
   calendar: 'calendar-icon',
   settings: 'settings-icon',
 };
+
+const fileSystem = {
+  id: 'desktop-root',
+  name: 'Biurko',
+  type: 'folder',
+  kind: 'Biurko',
+  description: 'Twoje najważniejsze projekty, skróty i inspiracje.',
+  tags: ['Ulubione'],
+  modified: '2024-05-18T08:00:00Z',
+  items: [
+    {
+      id: 'folder-projects',
+      name: 'Projekty',
+      type: 'folder',
+      kind: 'Folder',
+      description: 'Kolekcja eksperymentów interfejsu i systemów projektowych.',
+      tags: ['UI', 'Design'],
+      modified: '2024-05-18T11:30:00Z',
+      items: [
+        {
+          id: 'file-figma-aqua',
+          name: 'Aqua UI.fig',
+          type: 'document',
+          kind: 'Makieta Figma',
+          description: 'Komponenty interfejsu inspirowane macOS Sonoma z dodatkowymi animacjami.',
+          tags: ['Figma', 'Motion'],
+          modified: '2024-05-17T09:15:00Z',
+          size: '34 MB',
+          preview: {
+            image:
+              'https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=1200&q=80',
+          },
+        },
+        {
+          id: 'file-design-system',
+          name: 'DesignSystem.sketch',
+          type: 'document',
+          kind: 'Biblioteka',
+          description: 'Palety kolorów, typografia i komponenty dla symulatora.',
+          tags: ['Sketch', 'UI Kit'],
+          modified: '2024-05-16T18:45:00Z',
+          size: '89 MB',
+          preview: {
+            palette: ['#0ea5e9', '#7c3aed', '#f43f5e', '#fbbf24'],
+          },
+        },
+        {
+          id: 'file-keynote-launch',
+          name: 'Premiera.key',
+          type: 'document',
+          kind: 'Prezentacja',
+          description: 'Slajdy z planem wdrożenia i pokazem funkcji premium systemu.',
+          tags: ['Keynote'],
+          modified: '2024-05-15T14:20:00Z',
+          size: '21 MB',
+          preview: {
+            text:
+              'Agenda:\n1. Mission Control 2.0\n2. Nowy Finder z metadanymi\n3. Integracja z Muzyką generatywną',
+          },
+        },
+      ],
+    },
+    {
+      id: 'folder-photos',
+      name: 'Zdjęcia',
+      type: 'folder',
+      kind: 'Biblioteka',
+      description: 'Panoramy i tekstury wykorzystywane jako tapety systemowe.',
+      tags: ['Tapety'],
+      modified: '2024-05-12T07:55:00Z',
+      items: [
+        {
+          id: 'photo-aurora',
+          name: 'Aurora.jpg',
+          type: 'image',
+          kind: 'Zdjęcie',
+          description: 'Nocne niebo nad fiordem z tańczącą zorzą.',
+          tags: ['Foto', 'Inspiracja'],
+          modified: '2024-05-11T21:10:00Z',
+          size: '4.5 MB',
+          preview: {
+            image:
+              'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
+          },
+        },
+        {
+          id: 'photo-dunes',
+          name: 'Wydmy.heic',
+          type: 'image',
+          kind: 'Live Photo',
+          description: 'Minimalistyczna pustynia z miękkimi gradientami.',
+          tags: ['Foto'],
+          modified: '2024-05-10T18:40:00Z',
+          size: '6.2 MB',
+          preview: {
+            image:
+              'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80',
+          },
+        },
+        {
+          id: 'photo-ocean',
+          name: 'Oceanic.png',
+          type: 'image',
+          kind: 'Tekstura',
+          description: 'Delikatne fale inspirowane dźwiękami generatora ambientu.',
+          tags: ['Tekstury'],
+          modified: '2024-05-09T08:12:00Z',
+          size: '3.9 MB',
+          preview: {
+            image:
+              'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+          },
+        },
+      ],
+    },
+    {
+      id: 'file-notes-ideas',
+      name: 'Notatki.txt',
+      type: 'document',
+      kind: 'Dokument tekstowy',
+      description: 'Lista pomysłów i insightów do kolejnych wersji symulatora.',
+      tags: ['Dokument'],
+      modified: '2024-05-18T10:22:00Z',
+      size: '5 KB',
+      preview: {
+        text:
+          'Do zrobienia:\n- Automatyczna zmiana tapet\n- Integracja ze Spotlight\n- Rozszerzone gesty i skróty',
+      },
+      open: { type: 'app', target: 'notes', noteId: 'ideas' },
+    },
+    {
+      id: 'file-roadmap',
+      name: 'Plan.pdf',
+      type: 'document',
+      kind: 'Dokument PDF',
+      description: 'Roadmapa funkcji premium, harmonogram wdrożeń i zależności.',
+      tags: ['Strategia'],
+      modified: '2024-05-13T16:05:00Z',
+      size: '2.8 MB',
+      preview: {
+        text:
+          'Q2: Finder 2.0, nowa Safari, synchronizacja iCloud\nQ3: Mission Control, widgety\nQ4: Integracja z usługami',
+      },
+    },
+    {
+      id: 'file-inspiration-link',
+      name: 'Inspiracje.webloc',
+      type: 'link',
+      kind: 'Zakładka Safari',
+      description: 'Zapisane inspiracje wizualne i studia przypadków.',
+      tags: ['Safari'],
+      modified: '2024-05-14T12:00:00Z',
+      size: '1 KB',
+      preview: {
+        text: 'Otwórz kolekcję projektów Dribbble i Behance.',
+      },
+      open: { type: 'safari', url: 'https://dribbble.com/tags/macos' },
+    },
+    {
+      id: 'file-calendar',
+      name: 'Spotkania.ics',
+      type: 'calendar',
+      kind: 'Kalendarz',
+      description: 'Synchronizowany harmonogram rozmów z zespołem i klientami.',
+      tags: ['Organizacja'],
+      modified: '2024-05-18T07:00:00Z',
+      size: '12 KB',
+      preview: {
+        text: 'Dzisiejsze spotkania: stand-up 9:30, warsztat 14:00.',
+      },
+      open: { type: 'calendar', date: new Date().toISOString() },
+    },
+    {
+      id: 'file-music-session',
+      name: 'Ambient.session',
+      type: 'audio',
+      kind: 'Projekt audio',
+      description: 'Preset generatora ambientu z ulubionym utworem.',
+      tags: ['Muzyka'],
+      modified: '2024-05-17T22:10:00Z',
+      size: '420 KB',
+      preview: {
+        palette: ['#0ea5e9', '#38bdf8', '#1d4ed8'],
+      },
+      open: { type: 'music', track: 0, autoplay: true },
+    },
+  ],
+};
+
+const fileRegistry = new Map();
 
 const SAFARI_PROXY_PREFIX = 'https://r.jina.ai/';
 const safariState = {
@@ -148,6 +367,57 @@ const calendarState = {
   events: [],
 };
 
+const notesState = {
+  initialized: false,
+  activeId: null,
+  elements: {},
+  notes: [
+    {
+      id: 'ideas',
+      title: 'Pomysł na aplikację',
+      updated: '2024-05-18T10:20:00Z',
+      preview: 'Symulator macOS z prawdziwym Safari i muzyką generatywną.',
+      body: `
+        <p>Stwórz jeszcze bardziej realistyczny system z rozbudowanym Finderem, skrótami i gestami.</p>
+        <ul>
+          <li>Finder z historią, breadcrumbs i podglądem metadanych.</li>
+          <li>Safari z obsługą zakładek i nawigacją wstecz/dalej.</li>
+          <li>Rozbudowana warstwa wizualna: glassmorphism, świetlne refleksy, animacje.</li>
+        </ul>
+      `,
+    },
+    {
+      id: 'research',
+      title: 'Inspiracje UX',
+      updated: '2024-05-17T22:45:00Z',
+      preview: 'Zapisane analizy najlepszych praktyk interfejsów systemowych.',
+      body: `
+        <p>Przeanalizuj:</p>
+        <ol>
+          <li>Mission Control i sposoby prezentowania wielu okien.</li>
+          <li>Nowe animacje w macOS Sonoma i dynamiczne tapety.</li>
+          <li>Centrum sterowania – modułowe kafelki i suwak jasności.</li>
+        </ol>
+        <blockquote>„Dopracowany detal tworzy wrażenie prawdziwego systemu.”</blockquote>
+      `,
+    },
+    {
+      id: 'checklist',
+      title: 'Lista wdrożeniowa',
+      updated: '2024-05-16T08:10:00Z',
+      preview: 'Najważniejsze kroki przed premierą wirtualnego systemu.',
+      body: `
+        <p>Zanim pokażesz projekt:</p>
+        <ul>
+          <li>Przygotuj prezentację Keynote i nagranie demo.</li>
+          <li>Upewnij się, że skróty klawiaturowe działają także na Windows.</li>
+          <li>Dodaj opcję eksportu ustawień oraz resetu tapet.</li>
+        </ul>
+      `,
+    },
+  ],
+};
+
 const notificationState = {
   initialized: false,
   items: [],
@@ -169,10 +439,16 @@ const spotlightState = {
 const quickLookState = {
   open: false,
   item: null,
+  fileId: null,
 };
 
 const finderState = {
   selectedItem: null,
+  selectedFile: null,
+  currentDirectory: null,
+  history: [],
+  historyIndex: -1,
+  initialized: false,
 };
 
 const appSwitcherState = {
@@ -183,6 +459,10 @@ const appSwitcherState = {
 
 const relativeFormatter = new Intl.RelativeTimeFormat('pl-PL', { numeric: 'auto' });
 const dateFormatter = new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' });
+const detailedDateFormatter = new Intl.DateTimeFormat('pl-PL', {
+  dateStyle: 'long',
+  timeStyle: 'short',
+});
 
 function updateClock() {
   const now = new Date();
@@ -344,12 +624,338 @@ function isFinderFrontmost() {
   return front?.dataset.appWindow === 'finder' && front.dataset.minimized !== 'true';
 }
 
+function registerFileTree(entry, parent = null) {
+  if (!entry || !entry.id) return;
+  entry.parent = parent;
+  fileRegistry.set(entry.id, entry);
+  if (Array.isArray(entry.items)) {
+    entry.items.forEach((child) => registerFileTree(child, entry));
+  }
+}
+
+function getFileFromElement(item) {
+  if (!item) return null;
+  const fileId = item.dataset.fileId;
+  return fileRegistry.get(fileId) ?? null;
+}
+
+function getFinderElementById(fileId) {
+  if (!finderElements.grid || !fileId) return null;
+  return finderElements.grid.querySelector(`[data-file-id="${fileId}"]`);
+}
+
+function formatFinderSubtitle(file) {
+  if (!file) return '';
+  if (file.type === 'folder') {
+    const count = Array.isArray(file.items) ? file.items.length : 0;
+    const suffix = count === 1 ? 'element' : count >= 2 && count <= 4 ? 'elementy' : 'elementów';
+    return `${count} ${suffix}`;
+  }
+  if (file.size && file.modified) {
+    const modifiedDate = new Date(file.modified);
+    return `${file.size} • ${formatRelativeTime(modifiedDate)}`;
+  }
+  if (file.size) {
+    return file.size;
+  }
+  if (file.modified) {
+    return formatRelativeTime(new Date(file.modified));
+  }
+  return file.kind ?? '';
+}
+
+function getFinderIconClassByType(type) {
+  if (type === 'folder') return 'folder-icon';
+  if (type === 'image') return 'image-icon';
+  if (type === 'link') return 'link-icon';
+  if (type === 'audio') return 'audio-icon';
+  if (type === 'calendar') return 'calendar-icon';
+  return 'file-icon';
+}
+
+function getInspectorIconSymbol(file) {
+  if (!file) return '';
+  if (file.type === 'folder') return '📁';
+  if (file.type === 'image') return '🖼️';
+  if (file.type === 'link') return '🌐';
+  if (file.type === 'audio') return '🎧';
+  if (file.type === 'calendar') return '📅';
+  return '📄';
+}
+
+function clearFinderSelection() {
+  finderState.selectedItem?.classList.remove('selected');
+  finderState.selectedItem = null;
+  finderState.selectedFile = null;
+  updateFinderInspector(null);
+}
+
 function setFinderSelection(item) {
-  if (!item) return;
+  if (!item) {
+    clearFinderSelection();
+    return;
+  }
   if (finderState.selectedItem === item) return;
   finderState.selectedItem?.classList.remove('selected');
   finderState.selectedItem = item;
   item.classList.add('selected');
+  const file = getFileFromElement(item);
+  finderState.selectedFile = file ?? null;
+  updateFinderInspector(file ?? null);
+}
+
+function updateFinderInspector(file) {
+  const inspector = finderElements.inspector;
+  if (!inspector?.root) return;
+
+  if (!file) {
+    inspector.empty?.removeAttribute('hidden');
+    inspector.content?.setAttribute('hidden', '');
+    if (inspector.icon) {
+      inspector.icon.textContent = '';
+    }
+    return;
+  }
+
+  inspector.empty?.setAttribute('hidden', '');
+  inspector.content?.removeAttribute('hidden');
+  if (inspector.icon) {
+    inspector.icon.textContent = getInspectorIconSymbol(file);
+    inspector.icon.dataset.type = file.type;
+  }
+  if (inspector.name) {
+    inspector.name.textContent = file.name;
+  }
+  if (inspector.kind) {
+    inspector.kind.textContent = file.kind ?? file.type;
+  }
+  if (inspector.modified) {
+    if (file.modified) {
+      const date = new Date(file.modified);
+      inspector.modified.textContent = `${detailedDateFormatter.format(date)} (${formatRelativeTime(date)})`;
+    } else {
+      inspector.modified.textContent = '—';
+    }
+  }
+  if (inspector.size) {
+    inspector.size.textContent = file.size ?? (file.type === 'folder' ? '—' : '—');
+  }
+  if (inspector.tags) {
+    inspector.tags.textContent = Array.isArray(file.tags) && file.tags.length > 0 ? file.tags.join(', ') : 'Brak';
+  }
+  if (inspector.description) {
+    inspector.description.textContent = file.description ?? '';
+    inspector.description.hidden = !file.description;
+  }
+}
+
+function buildFinderItem(file) {
+  const item = document.createElement('div');
+  item.className = 'grid-item';
+  item.tabIndex = 0;
+  item.dataset.fileId = file.id;
+  item.dataset.fileType = file.type;
+  item.dataset.previewTitle = file.name;
+  item.dataset.previewKind = file.kind || (file.type === 'folder' ? 'Folder' : 'Dokument');
+  if (file.description) {
+    item.dataset.previewBody = file.description;
+  }
+  if (file.preview?.image) {
+    item.dataset.previewImage = file.preview.image;
+  }
+  if (file.preview?.text) {
+    item.dataset.previewText = file.preview.text;
+  }
+  if (Array.isArray(file.preview?.palette)) {
+    item.dataset.previewPalette = file.preview.palette.join(',');
+  }
+  if (!item.dataset.previewImage && !item.dataset.previewText && !item.dataset.previewPalette) {
+    if (file.kind?.toLowerCase().includes('pdf')) {
+      item.dataset.previewIcon = 'pdf';
+    } else if (file.type === 'folder') {
+      item.dataset.previewIcon = 'folder';
+    } else if (file.type === 'link') {
+      item.dataset.previewIcon = 'link';
+    } else if (file.type === 'audio') {
+      item.dataset.previewIcon = 'audio';
+    }
+  }
+
+  const icon = document.createElement('div');
+  icon.className = `icon ${getFinderIconClassByType(file.type)}`;
+
+  const label = document.createElement('span');
+  label.className = 'grid-item-label';
+  label.textContent = file.name;
+
+  const subtitle = document.createElement('span');
+  subtitle.className = 'grid-item-subtitle';
+  subtitle.textContent = formatFinderSubtitle(file);
+
+  item.append(icon, label, subtitle);
+
+  item.addEventListener('click', () => setFinderSelection(item));
+  item.addEventListener('focus', () => setFinderSelection(item));
+  item.addEventListener('dblclick', (event) => {
+    event.preventDefault();
+    openFileEntry(file);
+  });
+  item.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      openFileEntry(file);
+    }
+  });
+
+  return item;
+}
+
+function updateFinderEmptyState(isEmpty) {
+  if (!finderElements.empty || !finderElements.grid) return;
+  finderElements.empty.hidden = !isEmpty;
+  finderElements.grid.toggleAttribute('hidden', isEmpty);
+}
+
+function updateFinderBreadcrumbs(directory) {
+  if (!finderElements.breadcrumbs) return;
+  finderElements.breadcrumbs.innerHTML = '';
+  const trail = [];
+  let current = directory;
+  while (current) {
+    if (current.type === 'folder') {
+      trail.unshift(current);
+    }
+    current = current.parent;
+  }
+
+  trail.forEach((entry, index) => {
+    if (index > 0) {
+      const divider = document.createElement('span');
+      divider.className = 'breadcrumb-divider';
+      divider.textContent = '›';
+      finderElements.breadcrumbs.append(divider);
+    }
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = entry.name;
+    button.disabled = index === trail.length - 1;
+    button.addEventListener('click', () => {
+      if (entry === finderState.currentDirectory) return;
+      navigateFinderTo(entry, { recordHistory: true });
+    });
+    finderElements.breadcrumbs.append(button);
+  });
+}
+
+function updateFinderNavButtons() {
+  if (finderElements.back) {
+    finderElements.back.disabled = finderState.historyIndex <= 0;
+  }
+  if (finderElements.forward) {
+    finderElements.forward.disabled =
+      finderState.historyIndex === -1 || finderState.historyIndex >= finderState.history.length - 1;
+  }
+  if (finderElements.up) {
+    finderElements.up.disabled = !finderState.currentDirectory?.parent;
+  }
+}
+
+function renderFinderDirectory(directory) {
+  if (!finderElements.grid) return;
+  finderElements.grid.innerHTML = '';
+  const items = Array.isArray(directory?.items) ? [...directory.items] : [];
+  items.sort((a, b) => {
+    if (a.type === b.type) {
+      return a.name.localeCompare(b.name, 'pl', { sensitivity: 'base' });
+    }
+    if (a.type === 'folder') return -1;
+    if (b.type === 'folder') return 1;
+    return a.name.localeCompare(b.name, 'pl', { sensitivity: 'base' });
+  });
+
+  items.forEach((file) => {
+    const element = buildFinderItem(file);
+    finderElements.grid.append(element);
+  });
+
+  updateFinderEmptyState(items.length === 0);
+  updateFinderBreadcrumbs(directory);
+  updateFinderNavButtons();
+}
+
+function navigateFinderTo(directory, { recordHistory = true } = {}) {
+  if (!directory || directory.type !== 'folder') return;
+  finderState.currentDirectory = directory;
+  if (recordHistory) {
+    finderState.history.splice(finderState.historyIndex + 1);
+    finderState.history.push(directory);
+    finderState.historyIndex = finderState.history.length - 1;
+  }
+  renderFinderDirectory(directory);
+  clearFinderSelection();
+}
+
+function goFinderBack() {
+  if (finderState.historyIndex <= 0) return;
+  finderState.historyIndex -= 1;
+  const target = finderState.history[finderState.historyIndex];
+  finderState.currentDirectory = target;
+  renderFinderDirectory(target);
+  clearFinderSelection();
+}
+
+function goFinderForward() {
+  if (finderState.historyIndex >= finderState.history.length - 1) return;
+  finderState.historyIndex += 1;
+  const target = finderState.history[finderState.historyIndex];
+  finderState.currentDirectory = target;
+  renderFinderDirectory(target);
+  clearFinderSelection();
+}
+
+function goFinderUp() {
+  const parent = finderState.currentDirectory?.parent;
+  if (!parent) return;
+  navigateFinderTo(parent, { recordHistory: true });
+}
+
+function openFileEntry(file, { fromQuickLook = false } = {}) {
+  if (!file) return;
+  if (!fromQuickLook) {
+    const element = getFinderElementById(file.id);
+    if (element) {
+      setFinderSelection(element);
+    }
+  }
+
+  if (file.type === 'folder' && Array.isArray(file.items)) {
+    navigateFinderTo(file, { recordHistory: true });
+    return;
+  }
+
+  if (file.open) {
+    if (file.open.type === 'app') {
+      openWindow(file.open.target, { noteId: file.open.noteId });
+      return;
+    }
+    if (file.open.type === 'safari') {
+      openWindow('safari', { safariUrl: file.open.url });
+      return;
+    }
+    if (file.open.type === 'calendar') {
+      openWindow('calendar', { calendarDate: file.open.date });
+      return;
+    }
+    if (file.open.type === 'music') {
+      openWindow('music', { musicTrack: file.open.track, autoplay: file.open.autoplay });
+      return;
+    }
+  }
+
+  const element = getFinderElementById(file.id) || finderState.selectedItem;
+  if (element) {
+    openQuickLookFrom(element);
+  }
 }
 
 function renderQuickLookPreview(item) {
@@ -362,34 +968,78 @@ function renderQuickLookPreview(item) {
     quickLookPreview.removeAttribute('data-kind');
   }
 
+  let hasContent = false;
+
   if (item.dataset.previewImage) {
     const img = document.createElement('img');
     img.src = item.dataset.previewImage;
     img.alt = item.dataset.previewTitle || 'Podgląd';
     quickLookPreview.append(img);
-    return;
+    hasContent = true;
   }
 
-  const variant = item.dataset.previewIcon || (kind === 'folder' ? 'folder' : 'document');
-  const icon = document.createElement('div');
-  icon.className = `quick-look-icon ${variant}`;
-  if (variant === 'pdf') {
-    icon.textContent = 'PDF';
-  } else if (variant === 'folder') {
-    icon.textContent = '📁';
-  } else {
-    icon.textContent = '📄';
+  if (item.dataset.previewText) {
+    const pre = document.createElement('pre');
+    pre.className = 'quick-look-text';
+    pre.textContent = item.dataset.previewText;
+    quickLookPreview.append(pre);
+    hasContent = true;
   }
-  quickLookPreview.append(icon);
+
+  if (item.dataset.previewPalette) {
+    const colors = item.dataset.previewPalette.split(',').map((color) => color.trim()).filter(Boolean);
+    if (colors.length > 0) {
+      const palette = document.createElement('div');
+      palette.className = 'quick-look-palette';
+      colors.forEach((color) => {
+        const swatch = document.createElement('span');
+        swatch.className = 'quick-look-swatch';
+        swatch.style.setProperty('--swatch-color', color);
+        swatch.textContent = color;
+        palette.append(swatch);
+      });
+      quickLookPreview.append(palette);
+      hasContent = true;
+    }
+  }
+
+  if (!hasContent) {
+    const variant = item.dataset.previewIcon || (kind === 'folder' ? 'folder' : 'document');
+    const icon = document.createElement('div');
+    icon.className = `quick-look-icon ${variant}`;
+    if (variant === 'pdf') {
+      icon.textContent = 'PDF';
+    } else if (variant === 'folder') {
+      icon.textContent = '📁';
+    } else if (variant === 'link') {
+      icon.textContent = '🌐';
+    } else if (variant === 'audio') {
+      icon.textContent = '🎵';
+    } else {
+      icon.textContent = '📄';
+    }
+    quickLookPreview.append(icon);
+  }
+}
+
+function getQuickLookActionLabel(file) {
+  if (!file) return 'Otwórz';
+  if (file.type === 'folder') return 'Otwórz folder';
+  if (file.open?.type === 'safari') return 'Otwórz w Safari';
+  if (file.open?.type === 'music') return 'Odtwórz w Muzyce';
+  if (file.open?.type === 'calendar') return 'Pokaż w Kalendarzu';
+  if (file.open?.type === 'app' && file.open.target === 'notes') return 'Pokaż w Notatkach';
+  return 'Otwórz';
 }
 
 function openQuickLookFrom(item) {
   if (!quickLook) return;
   setFinderSelection(item);
 
-  const title = item.dataset.previewTitle || item.querySelector('span')?.textContent || 'Podgląd';
+  const title = item.dataset.previewTitle || item.querySelector('.grid-item-label')?.textContent || 'Podgląd';
   const subtitle = item.dataset.previewKind || '';
   const description = item.dataset.previewBody || 'Brak dodatkowych informacji.';
+  const file = getFileFromElement(item);
 
   if (quickLookTitle) {
     quickLookTitle.textContent = title;
@@ -406,13 +1056,14 @@ function openQuickLookFrom(item) {
   renderQuickLookPreview(item);
 
   if (quickLookOpenButton) {
-    const target = item.dataset.previewOpen;
-    if (target) {
+    const hasAction = file && (file.type === 'folder' || file.open);
+    if (hasAction && file) {
       quickLookOpenButton.hidden = false;
-      quickLookOpenButton.dataset.target = target;
+      quickLookOpenButton.dataset.fileId = file.id;
+      quickLookOpenButton.textContent = getQuickLookActionLabel(file);
     } else {
       quickLookOpenButton.hidden = true;
-      delete quickLookOpenButton.dataset.target;
+      quickLookOpenButton.removeAttribute('data-file-id');
     }
   }
 
@@ -420,6 +1071,7 @@ function openQuickLookFrom(item) {
   quickLook.setAttribute('aria-hidden', 'false');
   quickLookState.open = true;
   quickLookState.item = item;
+  quickLookState.fileId = file?.id ?? null;
 }
 
 function closeQuickLook() {
@@ -428,33 +1080,31 @@ function closeQuickLook() {
   quickLook.setAttribute('aria-hidden', 'true');
   quickLookState.open = false;
   quickLookState.item = null;
+  quickLookState.fileId = null;
   if (quickLookPreview) {
     quickLookPreview.innerHTML = '';
     quickLookPreview.removeAttribute('data-kind');
   }
+  quickLookOpenButton?.removeAttribute('data-file-id');
 }
 
-function setupFinderInteractions() {
-  const finderWindow = document.querySelector('[data-app-window="finder"]');
-  if (!finderWindow) return;
-  const items = finderWindow.querySelectorAll('.content-grid .grid-item');
-  items.forEach((item) => {
-    item.addEventListener('click', () => setFinderSelection(item));
-    item.addEventListener('focus', () => setFinderSelection(item));
-    item.addEventListener('dblclick', (event) => {
-      event.preventDefault();
-      openQuickLookFrom(item);
-    });
-    item.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        openQuickLookFrom(item);
-      }
-    });
-  });
+function initializeFinder() {
+  if (finderState.initialized) return;
+  if (!finderElements.window) return;
+  finderState.initialized = true;
+  fileRegistry.clear();
+  registerFileTree(fileSystem, null);
+  finderState.history = [];
+  finderState.historyIndex = -1;
+  if (fileSystem.type === 'folder') {
+    navigateFinderTo(fileSystem, { recordHistory: true });
+  }
+  finderElements.back?.addEventListener('click', () => goFinderBack());
+  finderElements.forward?.addEventListener('click', () => goFinderForward());
+  finderElements.up?.addEventListener('click', () => goFinderUp());
 }
 
-function openWindow(appId) {
+function openWindow(appId, options = {}) {
   let windowEl = document.querySelector(`[data-app-window="${appId}"]`);
 
   if (!windowEl && appId === 'settings') {
@@ -467,12 +1117,18 @@ function openWindow(appId) {
 
   if (appId === 'safari') {
     setupSafari();
-    if (safariState.history.length === 0 && typeof safariState.navigate === 'function') {
-      safariState
-        .navigate('https://www.apple.com/pl', { preset: null })
-        .catch(() => {
+    if (typeof safariState.navigate === 'function') {
+      if (options.safariUrl) {
+        safariState.navigate(options.safariUrl).catch(() => {
           /* błędy widoczne w oknie Safari */
         });
+      } else if (safariState.history.length === 0) {
+        safariState
+          .navigate('https://www.apple.com/pl', { preset: null })
+          .catch(() => {
+            /* błędy widoczne w oknie Safari */
+          });
+      }
     }
   }
 
@@ -483,10 +1139,27 @@ function openWindow(appId) {
 
   if (appId === 'music') {
     setupMusic();
+    if (typeof options.musicTrack === 'number') {
+      selectMusicTrack(options.musicTrack, { autoplay: options.autoplay });
+    }
   }
 
   if (appId === 'calendar') {
     setupCalendar();
+    if (options.calendarDate) {
+      const date = new Date(options.calendarDate);
+      if (!Number.isNaN(date.getTime())) {
+        calendarState.currentDate = new Date(date.getFullYear(), date.getMonth(), 1);
+        renderCalendar();
+      }
+    }
+  }
+
+  if (appId === 'notes') {
+    setupNotes();
+    if (options.noteId) {
+      openNoteById(options.noteId);
+    }
   }
 
   windowEl.setAttribute('data-active', 'true');
@@ -507,8 +1180,7 @@ function closeWindow(windowEl) {
   activeWindows = activeWindows.filter((win) => win !== windowEl);
   updateDockIndicator(appId, false);
   if (appId === 'finder') {
-    finderState.selectedItem?.classList.remove('selected');
-    finderState.selectedItem = null;
+    clearFinderSelection();
     if (quickLookState.open) {
       closeQuickLook();
     }
@@ -680,17 +1352,18 @@ function enableWindowInteractions(windowEl) {
 }
 
 document.querySelectorAll('[data-app-window]').forEach(enableWindowInteractions);
-setupFinderInteractions();
+initializeFinder();
 
 quickLookCloseElements.forEach((element) => {
   element.addEventListener('click', () => closeQuickLook());
 });
 
 quickLookOpenButton?.addEventListener('click', () => {
-  const target = quickLookOpenButton.dataset.target;
+  const fileId = quickLookOpenButton.dataset.fileId;
+  const file = fileRegistry.get(fileId ?? '');
   closeQuickLook();
-  if (target) {
-    openWindow(target);
+  if (file) {
+    openFileEntry(file, { fromQuickLook: true });
   }
 });
 
@@ -1345,6 +2018,21 @@ function previousTrack() {
   }
 }
 
+function selectMusicTrack(index, { autoplay = false } = {}) {
+  if (index < 0 || index >= musicState.playlist.length) return;
+  musicState.index = index;
+  musicState.pausedAt = 0;
+  updateNowPlaying();
+  const shouldPlay = autoplay || musicState.isPlaying;
+  if (shouldPlay) {
+    stopCurrentOscillators();
+    musicState.isPlaying = false;
+    startMusicPlayback();
+  } else {
+    updateMusicToggleIcon();
+  }
+}
+
 function setupMusic() {
   if (musicState.initialized) return;
   const musicWindow = document.querySelector('[data-app-window="music"]');
@@ -1386,12 +2074,7 @@ function setupMusic() {
       button.className = 'playlist-item';
       button.innerHTML = `<div class="meta"><strong>${track.title}</strong><span>${track.artist}</span></div><span class="duration">${formatDuration(track.duration)}</span>`;
       button.addEventListener('click', () => {
-        musicState.index = index;
-        musicState.pausedAt = 0;
-        updateNowPlaying();
-        if (musicState.isPlaying) {
-          scheduleTrackFrom(0);
-        }
+        selectMusicTrack(index, { autoplay: true });
       });
       musicState.elements.playlist.append(button);
     });
@@ -1400,6 +2083,92 @@ function setupMusic() {
   updateNowPlaying();
   musicState.initialized = true;
 }
+
+function updateNotesActiveState() {
+  const { list } = notesState.elements;
+  if (!list) return;
+  list.querySelectorAll('button[data-note-id]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.noteId === notesState.activeId);
+  });
+}
+
+function renderNotesList() {
+  const { list } = notesState.elements;
+  if (!list) return;
+  list.innerHTML = '';
+  notesState.notes.forEach((note) => {
+    const item = document.createElement('li');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.noteId = note.id;
+    button.className = 'notes-list-item';
+    button.innerHTML = `<strong>${note.title}</strong><span>${note.preview}</span>`;
+    button.addEventListener('click', () => openNoteById(note.id));
+    item.append(button);
+    list.append(item);
+  });
+  updateNotesActiveState();
+}
+
+function openNoteById(id) {
+  const note = notesState.notes.find((entry) => entry.id === id);
+  const { title, body, updated } = notesState.elements;
+  if (!note) {
+    notesState.activeId = null;
+    if (title) title.textContent = 'Wybierz notatkę';
+    if (body) body.innerHTML = '<p>Wybierz notatkę po lewej stronie, aby wyświetlić treść.</p>';
+    if (updated) updated.textContent = 'Brak danych';
+    updateNotesActiveState();
+    return;
+  }
+
+  notesState.activeId = note.id;
+  if (title) title.textContent = note.title;
+  if (body) body.innerHTML = note.body;
+  if (updated) {
+    const date = new Date(note.updated);
+    updated.textContent = `Ostatnio edytowano: ${detailedDateFormatter.format(date)} (${formatRelativeTime(date)})`;
+  }
+  updateNotesActiveState();
+}
+
+function bindNotesToolbar() {
+  const { add, share, format, newButton } = notesState.elements;
+  const notify = (title, body) =>
+    pushNotification({
+      title,
+      body,
+      app: 'Notatki',
+    });
+
+  add?.addEventListener('click', () => notify('Nowa notatka', 'Tworzenie nowych notatek w wersji preview.')); 
+  share?.addEventListener('click', () => notify('Udostępnianie', 'Wkrótce udostępnisz notatki przez AirDrop.'));
+  format?.addEventListener('click', () => notify('Formatowanie', 'Szablony i style tekstu pojawią się w kolejnej iteracji.'));
+  newButton?.addEventListener('click', () => notify('Nowa notatka', 'Dodaj tekst korzystając z istniejących szablonów.'));
+}
+
+function setupNotes() {
+  if (notesState.initialized) return;
+  const notesWindow = document.querySelector('[data-app-window="notes"]');
+  if (!notesWindow) return;
+
+  notesState.elements = {
+    list: notesWindow.querySelector('[data-notes-list]'),
+    title: notesWindow.querySelector('[data-notes-title]'),
+    body: notesWindow.querySelector('[data-notes-body]'),
+    updated: notesWindow.querySelector('[data-notes-updated]'),
+    add: notesWindow.querySelector('[data-notes-add]'),
+    share: notesWindow.querySelector('[data-notes-share]'),
+    format: notesWindow.querySelector('[data-notes-format]'),
+    newButton: notesWindow.querySelector('[data-notes-new]'),
+  };
+
+  renderNotesList();
+  bindNotesToolbar();
+  openNoteById(notesState.notes[0]?.id ?? null);
+  notesState.initialized = true;
+}
+
 function buildEventDate({ monthOffset, day, hour, minute }) {
   const base = new Date();
   const date = new Date(base.getFullYear(), base.getMonth() + monthOffset, day, hour, minute);
