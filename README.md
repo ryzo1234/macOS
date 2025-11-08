@@ -7,9 +7,18 @@ Interaktywna, inspirowana macOS symulacja systemu operacyjnego, którą można u
 - realistyczny pasek menu z aktualizowanym zegarem w czasie rzeczywistym,
 - Dock z animacjami, wskaźnikami uruchomionych aplikacji i prostą interakcją z ikoną kosza,
 - okna aplikacji Finder, Notatki, Safari oraz Preferencje systemowe z przeciąganiem, minimalizacją i pseudo-trybem pełnoekranowym,
+- okna są skalowalne dzięki uchwytom w prawym dolnym rogu, a po wyjściu z pełnego ekranu wracają do poprzednich wymiarów,
 - Safari z paskiem adresu, historią nawigacji i możliwością odwiedzania prawdziwych stron dzięki lekkiej warstwie proxy,
+- Terminal z historią poleceń, skrótami klawiszowymi oraz komendami do sterowania tapetami, trybem skupienia, powiadomieniami i muzyką,
+- generatywny odtwarzacz Muzyka z listą utworów, trybem pętli/losowania i kontrolą głośności w Centrum sterowania,
+- Kalendarz z nawigacją po miesiącach, wyróżnianiem dzisiejszej daty oraz listą nadchodzących wydarzeń,
 - ikony na biurku otwierające aplikacje po pojedynczym kliknięciu, podwójnym kliknięciu lub z klawiatury,
-- panel ustawień umożliwiający zmianę tapety z kilku wariantów,
+- Quick Look w Finderze z podglądem plików (spacja, Enter lub podwójne kliknięcie) oraz przyciskiem szybkiego otwarcia,
+- panel ustawień umożliwiający zmianę tapety z czterech wariantów,
+- Centrum sterowania z kafelkami Wi‑Fi/Bluetooth/Skupienie, suwakami jasności oraz głośności i integracją z odtwarzaczem,
+- Centrum powiadomień z kolejką wstrzymanych alertów podczas trybu skupienia i wskaźnikiem nieprzeczytanych w pasku menu,
+- Spotlight wywoływany skrótem ⌘ + Spacja z wyszukiwaniem aplikacji, szybkimi akcjami Safari i poleceniami terminala,
+- przełącznik aplikacji w stylu macOS wywoływany skrótem ⌘ + Tab z podglądem ikon i opisów,
 - responsywny układ oraz wsparcie dla preferencji motywu (jasny/ciemny).
 
 ## Uruchomienie lokalne

@@ -24,7 +24,8 @@
       <span class="menu-item">Pomoc</span>
     </div>
     <div class="menu-right">
-      <div class="menu-icon" aria-label="centrum sterowania">⃝</div>
+      <button class="menu-icon" type="button" data-control-toggle aria-label="Centrum sterowania">⃝</button>
+      <button class="menu-icon" type="button" data-notification-toggle aria-label="Pokaż powiadomienia">🔔</button>
       <div class="menu-icon" aria-label="Wi-Fi"></div>
       <div class="menu-icon" aria-label="Bateria">🔋</div>
       <div class="menu-clock" id="menuClock">--:--</div>
@@ -44,6 +45,18 @@
       <div class="desktop-icon" data-app="safari">
         <div class="icon-image safari-icon"></div>
         <span>Safari</span>
+      </div>
+      <div class="desktop-icon" data-app="terminal">
+        <div class="icon-image terminal-icon"></div>
+        <span>Terminal</span>
+      </div>
+      <div class="desktop-icon" data-app="music">
+        <div class="icon-image music-icon"></div>
+        <span>Muzyka</span>
+      </div>
+      <div class="desktop-icon" data-app="calendar">
+        <div class="icon-image calendar-icon"></div>
+        <span>Kalendarz</span>
       </div>
     </div>
 
@@ -73,25 +86,26 @@
             <div class="view-toggle">⬚ ⬚</div>
           </div>
           <div class="content-grid">
-            <div class="grid-item">
+            <div class="grid-item" tabindex="0" data-preview-title="Projekty" data-preview-kind="Folder" data-preview-body="Kolekcja szkiców UI i komponentów interfejsu." data-preview-icon="folder">
               <div class="icon folder-icon"></div>
               <span>Projekty</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" tabindex="0" data-preview-title="Zdjęcia" data-preview-kind="Biblioteka" data-preview-body="Alpejskie panoramy i materiały referencyjne do tapet." data-preview-image="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80">
               <div class="icon folder-icon"></div>
               <span>Zdjęcia</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" tabindex="0" data-preview-title="Notatki.txt" data-preview-kind="Dokument" data-preview-body="Symulacja macOS – lista pomysłów i notatek do kolejnych wersji." data-preview-open="notes">
               <div class="icon file-icon"></div>
               <span>Notatki.txt</span>
             </div>
-            <div class="grid-item">
+            <div class="grid-item" tabindex="0" data-preview-title="Plan.pdf" data-preview-kind="Dokument" data-preview-body="Roadmapa funkcji: Spotlight, Centrum sterowania, zaawansowane okna i skróty klawiszowe." data-preview-icon="pdf">
               <div class="icon file-icon"></div>
               <span>Plan.pdf</span>
             </div>
           </div>
         </section>
       </div>
+      <div class="resize-handle" role="presentation" aria-hidden="true"></div>
     </div>
 
     <div class="window" data-app-window="notes" aria-hidden="true">
@@ -129,6 +143,7 @@
           </article>
         </section>
       </div>
+      <div class="resize-handle" role="presentation" aria-hidden="true"></div>
     </div>
 
     <div class="window" data-app-window="safari" aria-hidden="true">
@@ -158,6 +173,92 @@
         <div class="safari-status" data-safari-status>Wpisz adres strony lub zapytanie, aby rozpocząć przeglądanie.</div>
         <iframe class="safari-webview" title="Safari przeglądarka" data-safari-webview sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
       </div>
+      <div class="resize-handle" role="presentation" aria-hidden="true"></div>
+    </div>
+
+    <div class="window" data-app-window="terminal" aria-hidden="true">
+      <div class="title-bar">
+        <div class="window-buttons">
+          <button class="window-btn close" aria-label="Zamknij"></button>
+          <button class="window-btn minimize" aria-label="Zminimalizuj"></button>
+          <button class="window-btn fullscreen" aria-label="Pełny ekran"></button>
+        </div>
+        <div class="title">Terminal</div>
+        <div class="title-actions">⌘</div>
+      </div>
+      <div class="window-content terminal-content">
+        <div class="terminal-display" data-terminal-log>
+          <div class="terminal-line">Last login: <span data-terminal-login></span> on console</div>
+          <div class="terminal-line">Symulator macOS © 2024</div>
+        </div>
+        <form class="terminal-input" data-terminal-form>
+          <label class="prompt" for="terminalCommand">macOS %</label>
+          <input id="terminalCommand" name="command" type="text" autocomplete="off" spellcheck="false" aria-label="Wpisz polecenie terminala">
+        </form>
+      </div>
+      <div class="resize-handle" role="presentation" aria-hidden="true"></div>
+    </div>
+
+    <div class="window" data-app-window="music" aria-hidden="true">
+      <div class="title-bar">
+        <div class="window-buttons">
+          <button class="window-btn close" aria-label="Zamknij"></button>
+          <button class="window-btn minimize" aria-label="Zminimalizuj"></button>
+          <button class="window-btn fullscreen" aria-label="Pełny ekran"></button>
+        </div>
+        <div class="title">Muzyka</div>
+        <div class="title-actions">♫</div>
+      </div>
+      <div class="window-content music-content">
+        <section class="music-now-playing">
+          <div class="album-art" data-music-art>🎵</div>
+          <div class="track-info">
+            <h2 data-music-title>Wybierz utwór</h2>
+            <p data-music-artist>Symulator macOS</p>
+            <div class="music-timeline">
+              <span data-music-current>0:00</span>
+              <div class="progress">
+                <div class="progress-bar" data-music-progress></div>
+              </div>
+              <span data-music-duration>0:00</span>
+            </div>
+            <div class="music-controls">
+              <button type="button" class="music-btn" data-music-prev aria-label="Poprzedni utwór">⏮</button>
+              <button type="button" class="music-btn primary" data-music-toggle aria-label="Odtwórz/Pauza">▶</button>
+              <button type="button" class="music-btn" data-music-next aria-label="Następny utwór">⏭</button>
+              <button type="button" class="music-btn" data-music-loop aria-label="Pętla">🔁</button>
+              <button type="button" class="music-btn" data-music-shuffle aria-label="Losuj">🔀</button>
+            </div>
+          </div>
+        </section>
+        <aside class="music-playlist" data-music-playlist></aside>
+      </div>
+      <div class="resize-handle" role="presentation" aria-hidden="true"></div>
+    </div>
+
+    <div class="window" data-app-window="calendar" aria-hidden="true">
+      <div class="title-bar">
+        <div class="window-buttons">
+          <button class="window-btn close" aria-label="Zamknij"></button>
+          <button class="window-btn minimize" aria-label="Zminimalizuj"></button>
+          <button class="window-btn fullscreen" aria-label="Pełny ekran"></button>
+        </div>
+        <div class="title">Kalendarz</div>
+        <div class="title-actions">📅</div>
+      </div>
+      <div class="window-content calendar-content">
+        <header class="calendar-header">
+          <button type="button" class="calendar-nav" data-calendar-prev aria-label="Poprzedni miesiąc">‹</button>
+          <div class="calendar-current" data-calendar-current>Miesiąc 2024</div>
+          <button type="button" class="calendar-nav" data-calendar-next aria-label="Następny miesiąc">›</button>
+        </header>
+        <div class="calendar-grid" data-calendar-grid aria-label="Widok miesiąca"></div>
+        <aside class="calendar-sidebar">
+          <h2>Następne wydarzenia</h2>
+          <ul class="calendar-events" data-calendar-events></ul>
+        </aside>
+      </div>
+      <div class="resize-handle" role="presentation" aria-hidden="true"></div>
     </div>
   </main>
 
@@ -174,6 +275,18 @@
       </button>
       <button class="dock-item" data-app="safari" aria-label="Otwórz Safari">
         <span class="dock-icon safari-icon"></span>
+        <span class="indicator"></span>
+      </button>
+      <button class="dock-item" data-app="terminal" aria-label="Otwórz Terminal">
+        <span class="dock-icon terminal-icon"></span>
+        <span class="indicator"></span>
+      </button>
+      <button class="dock-item" data-app="music" aria-label="Otwórz Muzykę">
+        <span class="dock-icon music-icon"></span>
+        <span class="indicator"></span>
+      </button>
+      <button class="dock-item" data-app="calendar" aria-label="Otwórz Kalendarz">
+        <span class="dock-icon calendar-icon"></span>
         <span class="indicator"></span>
       </button>
       <button class="dock-item" data-app="settings" aria-label="Preferencje systemowe">
@@ -229,6 +342,7 @@
                 <button data-wallpaper="sunset" class="active">Zachód</button>
                 <button data-wallpaper="aurora">Zorza</button>
                 <button data-wallpaper="abstract">Abstrakcja</button>
+                <button data-wallpaper="solar">Solar</button>
               </div>
             </div>
           </div>
@@ -236,6 +350,80 @@
       </div>
     </div>
   </template>
+
+  <aside class="control-center" data-control-center hidden>
+    <header>
+      <h2>Centrum sterowania</h2>
+      <button type="button" data-control-close aria-label="Zamknij centrum">✕</button>
+    </header>
+    <div class="control-grid">
+      <button type="button" class="control-tile" data-toggle="wifi">
+        <span class="control-icon"></span>
+        <span class="control-label">Wi‑Fi</span>
+        <span class="control-status" data-status="wifi">Połączono</span>
+      </button>
+      <button type="button" class="control-tile" data-toggle="bluetooth">
+        <span class="control-icon">⌲</span>
+        <span class="control-label">Bluetooth</span>
+        <span class="control-status" data-status="bluetooth">Włączony</span>
+      </button>
+      <button type="button" class="control-tile" data-toggle="focus">
+        <span class="control-icon">🌙</span>
+        <span class="control-label">Tryb skupienia</span>
+        <span class="control-status" data-status="focus">Wyłączony</span>
+      </button>
+    </div>
+    <div class="control-slider">
+      <label for="brightnessSlider">Jasność</label>
+      <input type="range" id="brightnessSlider" min="30" max="120" value="100" data-brightness>
+    </div>
+    <div class="control-slider">
+      <label for="volumeSlider">Głośność</label>
+      <input type="range" id="volumeSlider" min="0" max="100" value="80" data-volume>
+    </div>
+  </aside>
+
+  <aside class="notification-center" data-notification-center hidden aria-live="polite">
+    <header>
+      <h2>Powiadomienia</h2>
+      <button type="button" data-notification-clear>Wyczyść</button>
+    </header>
+    <div class="notification-list" data-notification-list>
+      <p class="notification-empty">Brak powiadomień. Ciesz się spokojem!</p>
+    </div>
+  </aside>
+
+  <div class="spotlight" data-spotlight hidden>
+    <div class="spotlight-panel">
+      <input type="search" placeholder="Szukaj aplikacji, dokumentów lub stron" aria-label="Wyszukaj" data-spotlight-input>
+      <ul class="spotlight-results" data-spotlight-results role="listbox"></ul>
+      <p class="spotlight-hint">Użyj ⬆ ⬇, aby wybrać aplikację i naciśnij Enter, by otworzyć.</p>
+    </div>
+  </div>
+
+  <div class="app-switcher" data-app-switcher hidden>
+    <div class="app-switcher-strip" data-app-switcher-strip role="listbox" aria-label="Przełącz aplikację"></div>
+  </div>
+
+  <div class="quick-look" data-quick-look hidden>
+    <div class="quick-look-backdrop" data-quick-look-close></div>
+    <section class="quick-look-panel" role="dialog" aria-modal="true" aria-labelledby="quickLookTitle">
+      <header class="quick-look-header">
+        <div class="quick-look-titles">
+          <h2 id="quickLookTitle" data-quick-look-title>Podgląd</h2>
+          <p data-quick-look-subtitle></p>
+        </div>
+        <div class="quick-look-actions">
+          <button type="button" class="quick-look-open" data-quick-look-open hidden>Otwórz</button>
+          <button type="button" class="quick-look-close" data-quick-look-close aria-label="Zamknij podgląd">✕</button>
+        </div>
+      </header>
+      <div class="quick-look-body">
+        <div class="quick-look-preview" data-quick-look-preview></div>
+        <p class="quick-look-description" data-quick-look-description></p>
+      </div>
+    </section>
+  </div>
 
   <script src="script.js" type="module"></script>
 </body>
