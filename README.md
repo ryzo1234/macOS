@@ -7,7 +7,8 @@ Interaktywna, inspirowana macOS symulacja systemu operacyjnego, którą można u
 - realistyczny pasek menu z aktualizowanym zegarem w czasie rzeczywistym,
 - Dock z animacjami, wskaźnikami uruchomionych aplikacji i prostą interakcją z ikoną kosza,
 - okna aplikacji Finder, Notatki, Safari oraz Preferencje systemowe z przeciąganiem, minimalizacją i pseudo-trybem pełnoekranowym,
-- ikony na biurku otwierające aplikacje po podwójnym kliknięciu,
+- Safari z paskiem adresu, historią nawigacji i możliwością odwiedzania prawdziwych stron dzięki lekkiej warstwie proxy,
+- ikony na biurku otwierające aplikacje po pojedynczym kliknięciu, podwójnym kliknięciu lub z klawiatury,
 - panel ustawień umożliwiający zmianę tapety z kilku wariantów,
 - responsywny układ oraz wsparcie dla preferencji motywu (jasny/ciemny).
 

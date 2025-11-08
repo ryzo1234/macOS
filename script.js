@@ -17,6 +17,14 @@ const wallpapers = {
 
 let activeWindows = [];
 let zIndexCounter = 10;
+const SAFARI_PROXY_PREFIX = 'https://r.jina.ai/';
+const safariState = {
+  history: [],
+  index: -1,
+  initialized: false,
+  isLoading: false,
+  navigate: null,
+};
 
 function updateClock() {
   const now = new Date();
@@ -41,6 +49,15 @@ function openWindow(appId) {
 
   if (!windowEl) {
     return;
+  }
+
+  if (appId === 'safari') {
+    setupSafari();
+    if (safariState.history.length === 0 && typeof safariState.navigate === 'function') {
+      safariState.navigate('https://www.apple.com/pl', { preset: null }).catch(() => {
+        /* błędy są prezentowane w interfejsie Safari */
+      });
+    }
   }
 
   windowEl.setAttribute('data-active', 'true');
@@ -124,8 +141,19 @@ function setupSettingsPanel(windowEl) {
 }
 
 document.querySelectorAll('.desktop-icon').forEach((icon) => {
+  icon.setAttribute('tabindex', '0');
   icon.addEventListener('dblclick', () => {
     openWindow(icon.dataset.app);
+  });
+  icon.addEventListener('click', (event) => {
+    if (event.detail === 2) return;
+    openWindow(icon.dataset.app);
+  });
+  icon.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openWindow(icon.dataset.app);
+    }
   });
 });
 
@@ -185,6 +213,207 @@ document.addEventListener('keydown', (event) => {
     }
   }
 });
+
+function setupSafari() {
+  if (safariState.initialized) return;
+  const safariWindow = document.querySelector('[data-app-window="safari"]');
+  if (!safariWindow) return;
+
+  const form = safariWindow.querySelector('[data-safari-form]');
+  const input = safariWindow.querySelector('[data-safari-input]');
+  const iframe = safariWindow.querySelector('[data-safari-webview]');
+  const status = safariWindow.querySelector('[data-safari-status]');
+  const backBtn = safariWindow.querySelector('[data-safari-back]');
+  const forwardBtn = safariWindow.querySelector('[data-safari-forward]');
+  const refreshBtn = safariWindow.querySelector('[data-safari-refresh]');
+
+  function setSafariStatus(message, state = 'idle') {
+    if (!status) return;
+    status.textContent = message;
+    status.dataset.state = state;
+  }
+
+  function updateSafariButtons() {
+    const hasHistory = safariState.history.length > 0;
+    if (backBtn) {
+      backBtn.disabled = safariState.index <= 0 || safariState.isLoading;
+    }
+    if (forwardBtn) {
+      forwardBtn.disabled = safariState.index >= safariState.history.length - 1 || safariState.index === -1 || safariState.isLoading;
+    }
+    if (refreshBtn) {
+      refreshBtn.disabled = !hasHistory || safariState.index === -1 || safariState.isLoading;
+    }
+  }
+
+  function normalizeAddress(rawInput) {
+    const trimmed = rawInput.trim();
+    if (!trimmed) return null;
+
+    const httpProtocol = /^(https?:)\/\//i;
+    const otherProtocol = /^[a-z][a-z0-9+.-]*:\/\//i;
+
+    if (httpProtocol.test(trimmed)) {
+      try {
+        const url = new URL(trimmed);
+        return { url: url.toString(), display: url.toString(), raw: trimmed };
+      } catch (error) {
+        return null;
+      }
+    }
+
+    if (otherProtocol.test(trimmed)) {
+      try {
+        const url = new URL(trimmed);
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          return { url: url.toString(), display: url.toString(), raw: trimmed };
+        }
+        return null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    if (trimmed.includes(' ')) {
+      const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(trimmed)}`;
+      return { url: searchUrl, display: trimmed, raw: trimmed };
+    }
+
+    if (/^[\w.-]+\.[a-z]{2,}$/i.test(trimmed)) {
+      const url = `https://${trimmed}`;
+      return { url, display: url, raw: trimmed };
+    }
+
+    const fallback = `https://duckduckgo.com/?q=${encodeURIComponent(trimmed)}`;
+    return { url: fallback, display: trimmed, raw: trimmed };
+  }
+
+  function sanitizeSafariHtml(html, baseUrl) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    doc.querySelectorAll('script, iframe, object, embed').forEach((node) => node.remove());
+    doc.querySelectorAll('*').forEach((element) => {
+      [...element.attributes].forEach((attr) => {
+        if (attr.name.startsWith('on')) {
+          element.removeAttribute(attr.name);
+        }
+      });
+    });
+
+    const head = doc.head || doc.createElement('head');
+    if (!doc.head) {
+      doc.documentElement.prepend(head);
+    }
+
+    const base = doc.createElement('base');
+    base.href = baseUrl;
+    head.prepend(base);
+
+    const resetStyle = doc.createElement('style');
+    resetStyle.textContent = `body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0 auto; padding: 24px; max-width: min(1200px, 100%); line-height: 1.6; color: #111827; background: #ffffff; } a { color: #0a84ff; } img, video { max-width: 100%; height: auto; }`;
+    head.appendChild(resetStyle);
+
+    if (!doc.body) {
+      const body = doc.createElement('body');
+      doc.documentElement.appendChild(body);
+    }
+
+    return `<!DOCTYPE html>${doc.documentElement.outerHTML}`;
+  }
+
+  async function navigate(rawInput, { addToHistory = true, preset = null } = {}) {
+    if (safariState.isLoading) return;
+
+    const normalized = preset ?? normalizeAddress(rawInput);
+    if (!normalized) {
+      setSafariStatus('Nie udało się rozpoznać adresu. Spróbuj ponownie.', 'error');
+      return;
+    }
+
+    const { url, display, raw } = normalized;
+    const proxiedUrl = `${SAFARI_PROXY_PREFIX}${url}`;
+    safariState.isLoading = true;
+    updateSafariButtons();
+    input.value = display;
+    setSafariStatus(`Ładowanie: ${url}`, 'loading');
+    iframe.srcdoc = `<!DOCTYPE html><html lang="pl"><head><meta charset="utf-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f3f4f6;color:#1f2937;} .spinner{width:48px;height:48px;border:4px solid rgba(15,23,42,0.15);border-top-color:#0a84ff;border-radius:50%;animation:spin 0.8s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}</style></head><body><div class="spinner" role="progressbar" aria-label="Ładowanie"></div></body></html>`;
+
+    try {
+      const response = await fetch(proxiedUrl, { mode: 'cors' });
+      if (!response.ok) {
+        throw new Error(`Kod odpowiedzi: ${response.status}`);
+      }
+      const html = await response.text();
+      const sanitized = sanitizeSafariHtml(html, url);
+      iframe.srcdoc = sanitized;
+      setSafariStatus(`Wyświetlam: ${url}`, 'ready');
+
+      if (addToHistory) {
+        safariState.history.splice(safariState.index + 1);
+        safariState.history.push({ raw: raw ?? rawInput, url, display });
+        safariState.index = safariState.history.length - 1;
+      }
+    } catch (error) {
+      iframe.srcdoc = `<!DOCTYPE html><html lang="pl"><head><meta charset="utf-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#fef2f2;color:#991b1b;padding:24px;text-align:center;} .panel{max-width:420px;background:#fee2e2;border-radius:16px;padding:24px;box-shadow:0 12px 30px rgba(153,27,27,0.15);} h1{font-size:20px;margin-bottom:12px;} p{font-size:14px;line-height:1.5;}</style></head><body><div class="panel"><h1>Nie udało się wczytać strony</h1><p>Spróbuj ponownie później lub wpisz inny adres.</p><p>Szczegóły: ${error.message}</p></div></body></html>`;
+      setSafariStatus(`Błąd ładowania: ${error.message}`, 'error');
+    } finally {
+      safariState.isLoading = false;
+      updateSafariButtons();
+    }
+  }
+
+  function goToHistory(index) {
+    const entry = safariState.history[index];
+    if (!entry) return;
+    safariState.index = index;
+    navigate(entry.raw, { addToHistory: false, preset: entry });
+  }
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!input) return;
+    const value = input.value.trim();
+    if (!value) {
+      setSafariStatus('Wpisz adres strony lub zapytanie.', 'error');
+      return;
+    }
+    navigate(value).catch(() => {
+      /* błąd obsłużony w navigate */
+    });
+  });
+
+  backBtn?.addEventListener('click', () => {
+    if (safariState.isLoading) return;
+    if (safariState.index > 0) {
+      goToHistory(safariState.index - 1);
+    }
+  });
+
+  forwardBtn?.addEventListener('click', () => {
+    if (safariState.isLoading) return;
+    if (safariState.index < safariState.history.length - 1) {
+      goToHistory(safariState.index + 1);
+    }
+  });
+
+  refreshBtn?.addEventListener('click', () => {
+    if (safariState.isLoading) return;
+    const entry = safariState.history[safariState.index];
+    if (entry) {
+      navigate(entry.raw, { addToHistory: false, preset: entry }).catch(() => {
+        /* obsługa błędu w navigate */
+      });
+    }
+  });
+
+  safariState.initialized = true;
+  safariState.navigate = navigate;
+  updateSafariButtons();
+  setSafariStatus('Wpisz adres strony lub zapytanie, aby rozpocząć przeglądanie.', 'idle');
+}
+
+setupSafari();
 
 window.addEventListener('load', () => {
   openWindow('finder');

@@ -143,11 +143,20 @@
       </div>
       <div class="window-content safari-content">
         <div class="safari-toolbar">
-          <div class="traffic-light"></div>
-          <div class="address-bar">https://www.apple.com/pl</div>
-          <div class="toolbar-actions">☰</div>
+          <div class="safari-controls">
+            <button class="safari-btn" type="button" data-safari-back aria-label="Wstecz">‹</button>
+            <button class="safari-btn" type="button" data-safari-forward aria-label="Dalej">›</button>
+          </div>
+          <form class="safari-address" data-safari-form>
+            <input class="safari-input" type="text" name="address" autocomplete="off" placeholder="Wpisz adres lub wyszukaj" data-safari-input>
+            <button class="safari-go" type="submit">Idź</button>
+          </form>
+          <div class="toolbar-actions">
+            <button class="safari-btn" type="button" data-safari-refresh aria-label="Odśwież">⟳</button>
+          </div>
         </div>
-        <iframe class="safari-preview" title="Safari podgląd" srcdoc="<html><body style='margin:0;font-family:Helvetica,Arial,sans-serif;background:#f5f5f7;'><header style='background:#1d1d1f;color:#f5f5f7;padding:24px;text-align:center;font-size:24px;'>Witaj w Safari</header><main style='padding:24px;text-align:center;'><p>To jedynie podgląd. W prawdziwym Safari odwiedzisz każdą stronę.</p><button style='background:#0071e3;color:#fff;border:none;border-radius:20px;padding:10px 24px;font-size:16px;'>Dowiedz się więcej</button></main></body></html>"></iframe>
+        <div class="safari-status" data-safari-status>Wpisz adres strony lub zapytanie, aby rozpocząć przeglądanie.</div>
+        <iframe class="safari-webview" title="Safari przeglądarka" data-safari-webview sandbox="allow-forms allow-same-origin allow-scripts"></iframe>
       </div>
     </div>
   </main>
