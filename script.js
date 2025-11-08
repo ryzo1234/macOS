@@ -457,7 +457,10 @@ const appSwitcherState = {
   index: 0,
 };
 
-const relativeFormatter = new Intl.RelativeTimeFormat('pl-PL', { numeric: 'auto' });
+const relativeFormatter =
+  typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat === 'function'
+    ? new Intl.RelativeTimeFormat('pl-PL', { numeric: 'auto' })
+    : null;
 const dateFormatter = new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' });
 const detailedDateFormatter = new Intl.DateTimeFormat('pl-PL', {
   dateStyle: 'long',
@@ -2187,22 +2190,70 @@ function populateCalendarEvents() {
   ];
 }
 
+function polishPluralForm(value, [singular, paucal, plural]) {
+  const absolute = Math.abs(value);
+  const mod10 = absolute % 10;
+  const mod100 = absolute % 100;
+  if (absolute === 1) {
+    return singular;
+  }
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+    return paucal;
+  }
+  return plural;
+}
+
+function formatRelativeTimeFallback(value, unit) {
+  if (value === 0) {
+    return 'teraz';
+  }
+
+  const absolute = Math.abs(value);
+  const futureForms = {
+    minute: ['minutę', 'minuty', 'minut'],
+    hour: ['godzinę', 'godziny', 'godzin'],
+    day: ['dzień', 'dni', 'dni'],
+  };
+  const pastForms = {
+    minute: ['minutę', 'minuty', 'minut'],
+    hour: ['godzinę', 'godziny', 'godzin'],
+    day: ['dzień', 'dni', 'dni'],
+  };
+
+  if (value > 0) {
+    const label = polishPluralForm(value, futureForms[unit] ?? ['jednostkę', 'jednostki', 'jednostek']);
+    return `za ${absolute} ${label}`;
+  }
+
+  const pastLabel = polishPluralForm(value, pastForms[unit] ?? ['jednostkę', 'jednostki', 'jednostek']);
+  return `${absolute} ${pastLabel} temu`;
+}
+
 function formatRelativeTime(date) {
   const now = new Date();
   const diff = date.getTime() - now.getTime();
   const diffMinutes = Math.round(diff / 60000);
 
   if (Math.abs(diffMinutes) < 60) {
-    return relativeFormatter.format(diffMinutes, 'minute');
+    if (relativeFormatter) {
+      return relativeFormatter.format(diffMinutes, 'minute');
+    }
+    return formatRelativeTimeFallback(diffMinutes, 'minute');
   }
 
   const diffHours = Math.round(diffMinutes / 60);
   if (Math.abs(diffHours) < 24) {
-    return relativeFormatter.format(diffHours, 'hour');
+    if (relativeFormatter) {
+      return relativeFormatter.format(diffHours, 'hour');
+    }
+    return formatRelativeTimeFallback(diffHours, 'hour');
   }
 
   const diffDays = Math.round(diffHours / 24);
-  return relativeFormatter.format(diffDays, 'day');
+  if (relativeFormatter) {
+    return relativeFormatter.format(diffDays, 'day');
+  }
+  return formatRelativeTimeFallback(diffDays, 'day');
 }
 
 function renderCalendar() {
