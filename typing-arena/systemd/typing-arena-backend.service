@@ -1,0 +1,14 @@
+[Unit]
+Description=Typing Arena Backend
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/typing-arena/backend
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+User=www-data
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
